@@ -4,10 +4,14 @@ import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter, useSearchParams } from "next/navigation";
 
+(BigInt.prototype as any).toJSON = function () {
+  return this.toString();
+};
+
 const Home = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [result, setResult] = useState<any>({ path: "" });
+  const [result, setResult] = useState<any>({ path: "", error: "" });
 
   useEffect(() => {
     if (!searchParams.get("channel")) {
@@ -56,7 +60,7 @@ const Home = () => {
           "path",
           `${searchParams.get(
             "channel"
-          )}/test_${new Date().getUTCMilliseconds()}.webm`
+          )}/test_${new Date().getUTCMilliseconds()}.webpm`
         );
         setCurrent(2);
 
@@ -67,7 +71,7 @@ const Home = () => {
 
         setResult(await result.json());
 
-        setCurrent(3);
+        setCurrent(0);
       };
 
       setRecorder(recorder);
@@ -105,7 +109,9 @@ const Home = () => {
           {statusTexts[current]}
         </button>
 
-        {result.path == "" ? null : (
+        {result.error != "" ? (
+          <p>{result.error}</p>
+        ) : result.path == "" ? null : (
           <a
             href={`https://${query.data?.contract}.3333.w3link.io/${result.path}`}
           >

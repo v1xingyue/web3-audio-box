@@ -32,15 +32,21 @@ export const POST = async (req: Request) => {
     error: "",
     balance: ethers.formatUnits(balance),
     path,
+    store_result: {},
   };
 
   try {
-    const result = await storage
-      .uploadData("test.webpm", Buffer.from(arrayBuffer))
+    const store_result = (await storage
+      .uploadData(path, Buffer.from(arrayBuffer))
       .catch((err: any) => {
         console.log("upload error : ", err);
-      });
+      })) as any;
     console.log("result:", result);
+    result.store_result = store_result as any;
+    if (store_result.currentSuccessIndex == -1) {
+      result.error =
+        "Upload failed, maybe reason: insufficient funds for intrinsic transaction cost  ";
+    }
   } catch (error: any) {
     result.error = error;
   }
