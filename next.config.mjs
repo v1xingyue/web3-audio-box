@@ -3,6 +3,9 @@ import path from "path";
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  experimental: {
+    missingSuspenseWithCSRBailout: false,
+  },
   webpack: (config, { isServer, dev, dir }) => {
     config.module.rules.push({
       test: /\.wasm$/,
