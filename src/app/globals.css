@@ -18,3 +18,8 @@ div.main{
   align-items: center; 
   text-align: center;
 }
+
+p.error {
+  color: red;
+  font-weight: bold;
+}

@@ -110,7 +110,7 @@ const Home = () => {
         </button>
 
         {result.error != "" ? (
-          <p>{result.error}</p>
+          <p className="error">{result.error}</p>
         ) : result.path == "" ? null : (
           <a
             href={`https://${query.data?.contract}.3333.w3link.io/${result.path}`}
