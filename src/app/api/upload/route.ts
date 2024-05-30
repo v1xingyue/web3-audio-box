@@ -32,7 +32,7 @@ export const POST = async (req: Request) => {
     error: "",
     balance: ethers.formatUnits(balance),
     path,
-    store_result: {},
+    // store_result: {},
   };
 
   try {
@@ -42,8 +42,12 @@ export const POST = async (req: Request) => {
         console.log("upload error : ", err);
       })) as any;
     console.log("result:", result);
-    result.store_result = store_result as any;
-    if (store_result.currentSuccessIndex == -1) {
+    // result.store_result = store_result as any;
+    if (
+      store_result &&
+      store_result.currentSuccessIndex &&
+      store_result.currentSuccessIndex == -1
+    ) {
       result.error =
         "Upload failed, maybe reason: insufficient funds for intrinsic transaction cost  ";
     }
