@@ -1,10 +1,6 @@
 import { ethers } from "ethers";
 import { EthStorageBrowser as Ethstorage } from "ethstorage-sdk-ts";
 
-export const config = {
-  runtime: "edge",
-};
-
 const getRpc = () => {
   return new ethers.JsonRpcProvider(process.env.rpc);
 };

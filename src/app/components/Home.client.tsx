@@ -3,12 +3,47 @@
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter, useSearchParams } from "next/navigation";
+import { EthStorageBrowser as Ethstorage } from "ethstorage-sdk-ts";
 
 (BigInt.prototype as any).toJSON = function () {
   return this.toString();
 };
 
+const doUpload = async (path: string, audioBlob: Blob) => {
+  // console.log(audioBlob.size);
+  // let error = "";
+  // const storage = new Ethstorage(
+  //   process.env.rpc as string,
+  //   process.env.privateKey,
+  //   process.env.contract
+  // );
+  // const arrayBuffer = await audioBlob.arrayBuffer();
+  // const store_result = await storage.uploadData(path, Buffer.from(arrayBuffer));
+  // if (
+  //   store_result &&
+  //   store_result.currentSuccessIndex &&
+  //   store_result.currentSuccessIndex == -1
+  // ) {
+  //   error =
+  //     "Upload failed, maybe reason: insufficient funds for intrinsic transaction cost  ";
+  // }
+  // return {
+  //   path,
+  //   error,
+  // };
+  const formData = new FormData();
+  formData.append("audio", audioBlob);
+  formData.append("path", path);
+  const result = await fetch("/api/upload", {
+    method: "POST",
+    body: formData,
+  });
+  return result.json();
+};
+
 const Home = () => {
+  const [seconds, setSeconds] = useState(5);
+
   const router = useRouter();
   const searchParams = useSearchParams();
   const [result, setResult] = useState<any>({ path: "", error: "" });
@@ -58,22 +93,10 @@ const Home = () => {
 
       recorder.onstop = async () => {
         const audioBlob = new Blob(audioChunks, { type: "audio/webm" });
-        console.log(audioBlob.size);
-        const formData = new FormData();
-        formData.append("audio", audioBlob);
-        formData.append(
-          "path",
-          `${channel}/audio_${new Date().getTime()}.webpm`
-        );
+        const uploadPath = `${channel}/audio_${new Date().getTime()}.webpm`;
         setCurrent(2);
-
-        const result = await fetch("/api/upload", {
-          method: "POST",
-          body: formData,
-        });
-
-        setResult(await result.json());
-
+        const result = await doUpload(uploadPath, audioBlob);
+        setResult(result);
         setCurrent(0);
       };
 
@@ -86,13 +109,23 @@ const Home = () => {
 
   const operateRecord = async () => {
     console.log("start recording!!!");
+
     if (recorder != null) {
       if (current == 0) {
         setCurrent(1);
         recorder.start();
-      } else {
-        setCurrent(2);
-        recorder.stop();
+        let s = seconds;
+        const timer = setInterval(() => {
+          console.log("interval ...", seconds);
+          if (s == 0) {
+            console.log("stop timer...");
+            clearInterval(timer);
+            recorder.stop();
+          } else {
+            s--;
+            setSeconds(s);
+          }
+        }, 1000);
       }
     }
   };
@@ -104,13 +137,17 @@ const Home = () => {
       <p className="mt-1">Balance: {query.data?.balance}</p>
       <p className="mt-1">Channel: {searchParams.get("channel")}</p>
       <div className="w-full m-2">
-        <button
-          className="btn"
-          onClick={() => operateRecord()}
-          disabled={current != 0 && current != 1}
-        >
-          {statusTexts[current]}
-        </button>
+        <div>
+          <button
+            className="btn"
+            onClick={() => operateRecord()}
+            disabled={current != 0}
+          >
+            {statusTexts[current]}
+          </button>
+
+          {current == 1 ? <p>{seconds} Seconds Left!</p> : null}
+        </div>
 
         {result.error != "" ? (
           <p className="error">{result.error}</p>

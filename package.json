@@ -6,14 +6,14 @@
     "dev": "next dev ",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "server-build":"next build && mkdir -p  .next/server/app/api/wasm/ && cp node_modules/kzg-wasm/dist/wasm/kzg.wasm .next/server/app/api/wasm/kzg.wasm "
+    "lint": "next lint"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.40.0",
     "copy-webpack-plugin": "^12.0.2",
     "ethers": "^6.12.1",
     "ethstorage-sdk-ts": "^1.2.81",
+    "fs": "0.0.1-security",
     "kzg-wasm": "^0.4.0",
     "next": "14.2.3",
     "react": "^18",
