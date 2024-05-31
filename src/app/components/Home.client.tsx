@@ -12,10 +12,15 @@ const Home = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [result, setResult] = useState<any>({ path: "", error: "" });
+  const [channel, setChannel] = useState("");
 
   useEffect(() => {
     if (!searchParams.get("channel")) {
-      router.push("/?channel=" + crypto.randomUUID());
+      const id = crypto.randomUUID();
+      setChannel(id);
+      router.push("/?channel=" + id);
+    } else {
+      setChannel(searchParams.get("channel") as string);
     }
   }, [router, searchParams]);
 
@@ -58,9 +63,7 @@ const Home = () => {
         formData.append("audio", audioBlob);
         formData.append(
           "path",
-          `${searchParams.get(
-            "channel"
-          )}/test_${new Date().getUTCMilliseconds()}.webpm`
+          `${channel}/audio_${new Date().getTime()}.webpm`
         );
         setCurrent(2);
 
