@@ -13,9 +13,10 @@
     "copy-webpack-plugin": "^12.0.2",
     "ethers": "^6.12.1",
     "ethstorage-sdk-ts": "^1.2.81",
+    "ethstorage-sdk-ts-dev": "^1.2.82",
     "fs": "0.0.1-security",
     "kzg-wasm": "^0.4.0",
-    "next": "14.2.3",
+    "next": "^14.2.3",
     "react": "^18",
     "react-dom": "^18"
   },

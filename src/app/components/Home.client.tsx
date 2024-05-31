@@ -3,34 +3,12 @@
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter, useSearchParams } from "next/navigation";
-import { EthStorageBrowser as Ethstorage } from "ethstorage-sdk-ts";
 
 (BigInt.prototype as any).toJSON = function () {
   return this.toString();
 };
 
 const doUpload = async (path: string, audioBlob: Blob) => {
-  // console.log(audioBlob.size);
-  // let error = "";
-  // const storage = new Ethstorage(
-  //   process.env.rpc as string,
-  //   process.env.privateKey,
-  //   process.env.contract
-  // );
-  // const arrayBuffer = await audioBlob.arrayBuffer();
-  // const store_result = await storage.uploadData(path, Buffer.from(arrayBuffer));
-  // if (
-  //   store_result &&
-  //   store_result.currentSuccessIndex &&
-  //   store_result.currentSuccessIndex == -1
-  // ) {
-  //   error =
-  //     "Upload failed, maybe reason: insufficient funds for intrinsic transaction cost  ";
-  // }
-  // return {
-  //   path,
-  //   error,
-  // };
   const formData = new FormData();
   formData.append("audio", audioBlob);
   formData.append("path", path);

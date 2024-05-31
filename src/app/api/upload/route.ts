@@ -50,6 +50,8 @@ export const POST = async (req: Request) => {
     ) {
       result.error =
         "Upload failed, maybe reason: insufficient funds for intrinsic transaction cost  ";
+    } else {
+      const vlist = storage.download;
     }
   } catch (error: any) {
     result.error = error;
