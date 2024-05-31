@@ -17,8 +17,8 @@ const nextConfig = {
           new CopyWebpackPlugin({
             patterns: [
               {
-                from: "node_modules/kzg-wasm/dist/wasm/kzg.wasm",
-                to: ".next/server/wasm/kzg.wasm",
+                from: path.resolve("node_modules/kzg-wasm/dist/wasm/kzg.wasm"),
+                to: path.resolve(".next/server/wasm/kzg.wasm"),
               },
             ],
           })

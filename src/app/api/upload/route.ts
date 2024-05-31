@@ -1,6 +1,10 @@
 import { ethers } from "ethers";
 import { EthStorageBrowser as Ethstorage } from "ethstorage-sdk-ts";
 
+export const config = {
+  runtime: "edge",
+};
+
 const getRpc = () => {
   return new ethers.JsonRpcProvider(process.env.rpc);
 };
@@ -9,6 +13,7 @@ export const POST = async (req: Request) => {
   const formData = await req.formData();
   const audio = formData.get("audio") as Blob;
   const path = formData.get("path") as string;
+  const channel = formData.get("channel") as string;
   console.log(audio.type);
 
   const wallet = new ethers.Wallet(process.env.privateKey as string);
@@ -23,7 +28,7 @@ export const POST = async (req: Request) => {
     process.env.privateKey,
     process.env.flat_contract
   );
-
+  const listName = `${channel}/list.json`;
   const result = {
     now: new Date().toString(),
     contract: process.env.flat_contract,
@@ -33,6 +38,7 @@ export const POST = async (req: Request) => {
     balance: ethers.formatUnits(balance),
     path,
     // store_result: {},
+    listName,
   };
 
   try {
@@ -51,7 +57,17 @@ export const POST = async (req: Request) => {
       result.error =
         "Upload failed, maybe reason: insufficient funds for intrinsic transaction cost  ";
     } else {
-      const vlist = storage.download;
+      let r: any[] = [];
+      const v = await storage.download(listName);
+      if (v == null || v.toString() == "") {
+        r = [path];
+      } else {
+        r = JSON.parse(v.toString()) as any[];
+        r.push(path);
+      }
+
+      console.log(JSON.stringify(r));
+      await storage.uploadData(listName, JSON.stringify(r));
     }
   } catch (error: any) {
     result.error = error;

@@ -8,10 +8,11 @@ import { useRouter, useSearchParams } from "next/navigation";
   return this.toString();
 };
 
-const doUpload = async (path: string, audioBlob: Blob) => {
+const doUpload = async (channel: string, path: string, audioBlob: Blob) => {
   const formData = new FormData();
   formData.append("audio", audioBlob);
   formData.append("path", path);
+  formData.append("channel", channel);
   const result = await fetch("/api/upload", {
     method: "POST",
     body: formData,
@@ -73,7 +74,7 @@ const Home = () => {
         const audioBlob = new Blob(audioChunks, { type: "audio/webm" });
         const uploadPath = `${channel}/audio_${new Date().getTime()}.webpm`;
         setCurrent(2);
-        const result = await doUpload(uploadPath, audioBlob);
+        const result = await doUpload(channel, uploadPath, audioBlob);
         setResult(result);
         setCurrent(0);
       };
@@ -115,6 +116,13 @@ const Home = () => {
       <p className="mt-1">Balance: {query.data?.balance}</p>
       <p className="mt-1">Channel: {searchParams.get("channel")}</p>
       <div className="w-full m-2">
+        <p className="m-2">
+          Go To{" "}
+          <a className="link link-info" href={`/hello/?channel=${channel}`}>
+            Share Page
+          </a>
+        </p>
+
         <div>
           <button
             className="btn"
