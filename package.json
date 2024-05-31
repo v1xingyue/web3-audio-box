@@ -6,7 +6,8 @@
     "dev": "next dev ",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "server-build":"next build && mkdir -p  .next/server/app/api/wasm/ && cp node_modules/kzg-wasm/dist/wasm/kzg.wasm .next/server/app/api/wasm/kzg.wasm "
   },
   "dependencies": {
     "@tanstack/react-query": "^5.40.0",
