@@ -36,6 +36,13 @@ const Home = () => {
     } else {
       setChannel(searchParams.get("channel") as string);
     }
+
+    const v = localStorage.getItem("seconds");
+    if (v) {
+      setSeconds(parseInt(v));
+    } else {
+      localStorage.setItem("seconds", "5");
+    }
   }, [router, searchParams]);
 
   const query = useQuery({
