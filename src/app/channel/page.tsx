@@ -17,7 +17,7 @@ const Hello = () => {
     queryKey: ["audioList"],
     queryFn: async () => {
       const channel = searchParams.get("name");
-      const url = `https://0xbe3EEe31e274aabf33F455D5b29Cc96329FC39eb.3333.w3link.io/${channel}list.json`;
+      const url = `https://0xbe3EEe31e274aabf33F455D5b29Cc96329FC39eb.3333.w3link.io/${channel}/list.json`;
       console.log(url);
       const resp = await fetch(url);
       const items: any[] = await resp.json();
