@@ -125,7 +125,7 @@ const Home = () => {
       <div className="w-full m-2">
         <p className="m-2">
           Go To{" "}
-          <a className="link link-info" href={`/hello/?channel=${channel}`}>
+          <a className="link link-info" href={`/channel/?name=${channel}`}>
             Share Page
           </a>
         </p>

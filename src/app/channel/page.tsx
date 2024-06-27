@@ -8,7 +8,7 @@ const Hello = () => {
   const searchParams = useSearchParams();
 
   useEffect(() => {
-    if (!searchParams.get("channel")) {
+    if (!searchParams.get("name")) {
       console.log("channel empty!!!");
     }
   }, [searchParams]);
@@ -29,7 +29,7 @@ const Hello = () => {
 
   return (
     <>
-      <h1>Hello world</h1>
+      <h1>Hello channel audio list :</h1>
       {JSON.stringify(query.data)}
     </>
   );
