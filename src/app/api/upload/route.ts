@@ -63,7 +63,6 @@ export const POST = async (req: Request) => {
       //   r = JSON.parse(v.toString()) as any[];
       //   r.push(path);
       // }
-
       // console.log(JSON.stringify(r));
       // await storage.uploadData(listName, JSON.stringify(r));
     }
