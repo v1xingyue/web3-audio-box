@@ -55,16 +55,16 @@ export const POST = async (req: Request) => {
       result.error =
         "Upload failed, maybe reason: insufficient funds for intrinsic transaction cost  ";
     } else {
-      // let r: any[] = [];
-      // const v = await storage.download(listName);
-      // if (v == null || v.toString() == "") {
-      //   r = [path];
-      // } else {
-      //   r = JSON.parse(v.toString()) as any[];
-      //   r.push(path);
-      // }
-      // console.log(JSON.stringify(r));
-      // await storage.uploadData(listName, JSON.stringify(r));
+      let r: any[] = [];
+      const v = await storage.download(listName);
+      if (v == null || v.toString() == "") {
+        r = [path];
+      } else {
+        r = JSON.parse(v.toString()) as any[];
+        r.push(path);
+      }
+      console.log(JSON.stringify(r));
+      await storage.uploadData(listName, JSON.stringify(r));
     }
   } catch (error: any) {
     result.error = error;
