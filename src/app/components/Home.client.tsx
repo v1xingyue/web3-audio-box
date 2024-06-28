@@ -25,7 +25,7 @@ const doUpload = async (channel: string, path: string, audioBlob: Blob) => {
 };
 
 const Home = () => {
-  const [seconds, setSeconds] = useState(15);
+  const [seconds, setSeconds] = useState(10);
 
   const router = useRouter();
   const searchParams = useSearchParams();
