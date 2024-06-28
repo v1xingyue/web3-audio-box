@@ -3,16 +3,20 @@
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter, useSearchParams } from "next/navigation";
+import { WebmAudioToWav } from "../audio";
+
 
 (BigInt.prototype as any).toJSON = function () {
   return this.toString();
 };
 
 const doUpload = async (channel: string, path: string, audioBlob: Blob) => {
+  const wavBlob = await WebmAudioToWav(audioBlob);
   const formData = new FormData();
-  formData.append("audio", audioBlob);
+  formData.append("audio", wavBlob);
   formData.append("path", path);
-  formData.append("channel", channel);
+  formData.append("channel", channel);  
+
   const result = await fetch("/api/upload", {
     method: "POST",
     body: formData,
@@ -21,7 +25,7 @@ const doUpload = async (channel: string, path: string, audioBlob: Blob) => {
 };
 
 const Home = () => {
-  const [seconds, setSeconds] = useState(5);
+  const [seconds, setSeconds] = useState(15);
 
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -78,8 +82,12 @@ const Home = () => {
       };
 
       recorder.onstop = async () => {
+        // get audio format 
+        const audioType = recorder.mimeType;
+        console.log("audioType:", audioType);
+
         const audioBlob = new Blob(audioChunks, { type: "audio/webm" });
-        const uploadPath = `${channel}/audio_${new Date().getTime()}.webpm`;
+        const uploadPath = `${channel}/audio_${new Date().getTime()}.wav`;
         setCurrent(2);
         const result = await doUpload(channel, uploadPath, audioBlob);
         setResult(result);
