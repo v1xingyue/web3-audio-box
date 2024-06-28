@@ -24,8 +24,10 @@ const doUpload = async (channel: string, path: string, audioBlob: Blob) => {
   return result.json();
 };
 
+const defaultSeconds = 10;
+
 const Home = () => {
-  const [seconds, setSeconds] = useState(10);
+  const [seconds, setSeconds] = useState(defaultSeconds);
 
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -45,7 +47,7 @@ const Home = () => {
     if (v) {
       setSeconds(parseInt(v));
     } else {
-      localStorage.setItem("seconds", "5");
+      localStorage.setItem("seconds", String(defaultSeconds));
     }
   }, [router, searchParams]);
 
